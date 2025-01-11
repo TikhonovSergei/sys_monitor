@@ -7,6 +7,9 @@ from PyQt5.QtWidgets import QHBoxLayout, QTableWidget, QTableWidgetItem
 from PyQt5.QtCore import QTimer
 
 class SystemMonitor(QWidget):
+    """
+    Класс для мониторинга загрузки системы
+    """
     def __init__(self):
         super().__init__()
         self.recording = False
@@ -17,6 +20,9 @@ class SystemMonitor(QWidget):
         
 
     def initUI(self):
+        """
+        Инициализация графического интерфейса
+        """
         self.layout = QVBoxLayout()
 
         self.interval_layout = QHBoxLayout()
@@ -67,6 +73,9 @@ class SystemMonitor(QWidget):
         self.timer.start(1000)
     
     def set_interval(self, interval, button):
+        """
+        Установка интервала обновления данных
+        """
         self.timer.setInterval(interval * 1000)
         if self.selected_interval_button:
             self.selected_interval_button.setStyleSheet("")
@@ -74,6 +83,9 @@ class SystemMonitor(QWidget):
         self.selected_interval_button.setStyleSheet("background-color: lightblue")
 
     def view_records(self):
+        """
+        Отображение записей в базе данных
+        """
         conn = sqlite3.connect('system_stats.db')
         cursor = conn.cursor()
         cursor.execute('SELECT * FROM stats')
@@ -101,6 +113,9 @@ class SystemMonitor(QWidget):
         self.table_window.show()
 
     def update_stats(self):
+        """
+        Обновление данных о загрузке системы
+        """
         cpu_usage = psutil.cpu_percent()
         ram = psutil.virtual_memory()
         disk = psutil.disk_usage('/')
@@ -124,6 +139,9 @@ class SystemMonitor(QWidget):
             self.save_to_db(cpu_usage, ram_usage, disk_usage, ram_free, ram_total, disk_free, disk_total)
 
     def start_recording(self):
+        """
+        Начало записи данных в базу данных
+        """
         self.recording = True
         self.start_time = time.time()
         self.start_button.hide()
@@ -131,12 +149,18 @@ class SystemMonitor(QWidget):
         self.init_db()
 
     def stop_recording(self):
+        """
+        Остановка записи данных в базу данных
+        """
         self.recording = False
         self.start_button.show()
         self.stop_button.hide()
         self.timer_label.setText(f'Время записи 00:00')
 
     def init_db(self):
+        """
+        Инициализация базы данных
+        """
         self.conn = sqlite3.connect('system_stats.db')
         self.cursor = self.conn.cursor()
         self.cursor.execute('''CREATE TABLE IF NOT EXISTS stats (
@@ -150,7 +174,11 @@ class SystemMonitor(QWidget):
                             disk_total REAL)''')
         self.conn.commit()
 
-    def save_to_db(self, cpu_usage, ram_usage, ram_free, ram_total, disk_usage, disk_free, disk_total):
+    def save_to_db(self, cpu_usage, ram_usage, ram_free, ram_total,
+                   disk_usage, disk_free, disk_total):
+        """
+        Сохранение данных в базу данных
+        """
         conn = sqlite3.connect('system_stats.db')
         cursor = conn.cursor()
         cursor.execute('''CREATE TABLE IF NOT EXISTS stats (
@@ -162,13 +190,18 @@ class SystemMonitor(QWidget):
                             disk_usage REAL,
                             disk_free REAL,
                             disk_total REAL)''')
-        cursor.execute('''INSERT INTO stats (timestamp, cpu_usage, ram_usage, ram_free, ram_total, disk_usage, disk_free, disk_total)
+        cursor.execute('''INSERT INTO stats (timestamp, cpu_usage, ram_usage, ram_free,
+                       ram_total, disk_usage, disk_free, disk_total)
                         VALUES (?, ?, ?, ?, ?, ?, ?, ?)''',
-                    (time.strftime('%Y-%m-%d %H:%M:%S'), cpu_usage, ram_usage, ram_free, ram_total, disk_usage, disk_free, disk_total))
+                    (time.strftime('%Y-%m-%d %H:%M:%S'), cpu_usage, ram_usage, ram_free,
+                     ram_total, disk_usage, disk_free, disk_total))
         conn.commit()
         conn.close()
 
     def closeEvent(self, event):
+        """
+        Закрытие окна
+        """
         if self.recording:
             self.conn.close()
         event.accept()
