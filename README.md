@@ -25,6 +25,7 @@ python main.py
 ## Основные функции
 
 Начать запись: Начинает запись данных о системе в базу данных.
+`![alt text]([path/to/image](https://github.com/user-attachments/assets/1731de16-f828-45f5-8a73-1c1e57210039))`
 ![image]<img width="431" alt="image" src="https://github.com/user-attachments/assets/1731de16-f828-45f5-8a73-1c1e57210039" />
 
 Остановить запись: Останавливает запись данных.
