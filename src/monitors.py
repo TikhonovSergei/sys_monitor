@@ -174,10 +174,19 @@ class SystemMonitor(QWidget):
                             disk_total REAL)''')
         self.conn.commit()
 
-    def save_to_db(self, cpu_usage, ram_usage, ram_free, ram_total,
-                   disk_usage, disk_free, disk_total):
+    def save_to_db(self, cpu_usage: float, ram_usage: float, ram_free: float,
+                   ram_total: float, disk_usage: float, disk_free: float,
+                   disk_total: float):
         """
         Сохранение данных в базу данных
+        Args:
+            cpu_usage: загрузка ЦП
+            ram_usage: загрузка ОЗУ
+            ram_free: свободно ОЗУ
+            ram_total: всего ОЗУ
+            disk_usage: загрузка ПЗУ
+            disk_free: свободно ПЗУ
+            disk_total: всего ПЗУ
         """
         conn = sqlite3.connect('system_stats.db')
         cursor = conn.cursor()
