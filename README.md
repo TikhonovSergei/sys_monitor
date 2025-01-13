@@ -35,7 +35,7 @@ python main.py
 ![alt text](https://github.com/user-attachments/assets/4a25bcf6-5b8a-4b01-b439-f9b562d5884d)
 
 Просмотр записей: Открывает окно с таблицей, содержащей все записи из базы данных.
-![alt text](https://github.com/user-attachments/assets/d40ed8d6-85c2-41b9-a840-795694f08046)
+![alt text](https://github.com/user-attachments/assets/6a8b2a39-4282-47f3-945d-4a5d768e96b8)
 
 ## Тестирование
 Для запуска тестов используйте команду:
